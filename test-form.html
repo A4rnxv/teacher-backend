@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Competition Upload Test</title>
+</head>
+<body>
+    <h1>Create New Competition</h1>
+<form id="competitionForm">
+  <input type="text" id="eventName" placeholder="Event Name" required />
+  <input type="text" id="classGroup" placeholder="Class Group" required />
+  <input type="text" id="dayDate" placeholder="Day/Date" required />
+  <input type="text" id="venue" placeholder="Venue" required />
+  <textarea id="shortDescription" placeholder="Short Description" required></textarea>
+  <input type="url" id="registrationLink" placeholder="Registration Link" required />
+  <button type="submit">Publish Competition</button>
+</form>
+
+<script>
+document.getElementById("competitionForm").addEventListener("submit", async (event) => {
+  event.preventDefault();  // Prevent the default form submission
+
+  // Collect data from the form fields
+  const newCompetition = {
+    eventName: document.getElementById("eventName").value,
+    classGroup: document.getElementById("classGroup").value,
+    dayDate: document.getElementById("dayDate").value,
+    venue: document.getElementById("venue").value,
+    shortDescription: document.getElementById("shortDescription").value,
+    registrationLink: document.getElementById("registrationLink").value,
+  };
+
+  // Send data to the backend
+  try {
+    const response = await fetch("http://localhost:5000/api/competitions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newCompetition),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log("Competition Published:", result);
+      alert("Competition Published Successfully!");
+    } else {
+      const error = await response.json();
+      alert("Error: " + error.message);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred while publishing the competition.");
+  }
+});
+</script>
+</body>
+</html>
