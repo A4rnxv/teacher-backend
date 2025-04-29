@@ -99,5 +99,5 @@ app.delete('/api/competitions/:id', async (req, res) => {
 
 // --- Start server ---
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on https://teacher-backend-4d3v.onrender.com/`);
 });
