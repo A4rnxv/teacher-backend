@@ -1,4 +1,5 @@
 // server.js
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -11,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // --- MongoDB connection ---
-mongoose.connect('mongodb://127.0.0.1:27017/competitions', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
