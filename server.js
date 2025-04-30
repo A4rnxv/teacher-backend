@@ -1,34 +1,32 @@
 // server.js
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // --- Middleware ---
 app.use(cors());
 app.use(express.json());
 
 // --- MongoDB connection ---
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected successfully'))
-  .catch((error) => console.log('MongoDB connection error:', error));
+  .catch(err => console.log('MongoDB connection error:', err));
 
 // --- Schema & Model ---
 const competitionSchema = new mongoose.Schema({
-  eventName:       { type: String, required: true },
-  classGroup:      { type: String, required: true },
-  dayDate:         { type: String, required: true },
-  venue:           { type: String, required: true },
-  shortDescription:{ type: String, required: true },
-  registrationLink:{ type: String, required: true },
+  eventName:        { type: String, required: true },
+  classGroup:       { type: String, required: true },
+  dayDate:          { type: String, required: true },
+  venue:            { type: String, required: true },
+  shortDescription: { type: String, required: true },
+  registrationLink: { type: String, required: true },
 }, {
   toJSON: {
-    virtuals:   true,
+    virtuals: true,
     versionKey: false,
     transform: (_doc, ret) => {
       ret._id = ret._id.toString();
@@ -40,13 +38,10 @@ const competitionSchema = new mongoose.Schema({
 const Competition = mongoose.model('Competition', competitionSchema);
 
 // --- Routes ---
-
-// Basic landing route (avoid 404 on GET /)
 app.get('/', (_req, res) => {
   res.send('LVIS Competitions API is running.');
 });
 
-// Get all competitions
 app.get('/api/competitions', async (_req, res) => {
   try {
     const comps = await Competition.find().lean();
@@ -57,7 +52,6 @@ app.get('/api/competitions', async (_req, res) => {
   }
 });
 
-// Create new competition
 app.post('/api/competitions', async (req, res) => {
   try {
     const newComp = new Competition(req.body);
@@ -69,7 +63,6 @@ app.post('/api/competitions', async (req, res) => {
   }
 });
 
-// Update competition by ID
 app.put('/api/competitions/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -82,7 +75,6 @@ app.put('/api/competitions/:id', async (req, res) => {
   }
 });
 
-// Delete competition by ID
 app.delete('/api/competitions/:id', async (req, res) => {
   const { id } = req.params;
   console.log(`Deleting competition with ID: ${id}`);
@@ -98,5 +90,5 @@ app.delete('/api/competitions/:id', async (req, res) => {
 
 // --- Start server ---
 app.listen(PORT, () => {
-  console.log(`Server running on https://teacher-backend-4d3v.onrender.com/`);
+  console.log(`Server running on port ${PORT}`);
 });
