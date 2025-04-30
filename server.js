@@ -1,15 +1,18 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
+// Create the app
+const app = express();
+
+// CORS middleware (should be placed early in the code)
 app.use(cors());
 
-const app = express();
+// Server config
 const PORT = process.env.PORT || 10000;
 
 // --- Middleware ---
-app.use(cors());
 app.use(express.json());
 
 // --- MongoDB connection ---
@@ -91,4 +94,3 @@ app.delete('/api/competitions/:id', async (req, res) => {
 
 // --- Start server ---
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
