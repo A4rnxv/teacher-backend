@@ -141,16 +141,5 @@ app.get('/seed-houses', async (_req, res) => {
   }
 });
 
-  
-  try {
-    await House.deleteMany({});
-    await House.insertMany(houses);
-    res.send('Houses seeded successfully');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Seeding failed');
-  }
-});
-
 // --- Start server ---
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
