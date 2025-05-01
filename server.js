@@ -122,5 +122,40 @@ app.post('/api/houses/:name/add', async (req, res) => {
   res.json(house);
 });
 
+// Temporary seeding route
+app.get('/seed-houses', async (_req, res) => {
+  const houses = [
+    {
+      name: 'Gandhi',
+      score: 0,
+      imageUrl: 'gandhi.png'
+    },
+    {
+      name: 'Nehru',
+      score: 0,
+      imageUrl: 'nehru.png'
+    },
+    {
+      name: 'Tagore',
+      score: 0,
+      imageUrl: 'tagore.png'
+    },
+    {
+      name: 'Teresa',
+      score: 0,
+      imageUrl: 'teresa.png'
+    }
+  ];
+
+  try {
+    await House.deleteMany({});
+    await House.insertMany(houses);
+    res.send('Houses seeded successfully');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Seeding failed');
+  }
+});
+
 // --- Start server ---
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
