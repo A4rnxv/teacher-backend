@@ -123,30 +123,30 @@ app.post('/api/houses/:name/add', async (req, res) => {
 });
 
 // Temporary seeding route
-app.get('/seed-houses', async (_req, res) => {
-  const houses = [
-    {
-      name: 'Gandhi',
-      score: 0,
-      imageUrl: 'gandhi.png'
-    },
-    {
-      name: 'Nehru',
-      score: 0,
-      imageUrl: 'nehru.png'
-    },
-    {
-      name: 'Tagore',
-      score: 0,
-      imageUrl: 'tagore.png'
-    },
-    {
-      name: 'Teresa',
-      score: 0,
-      imageUrl: 'teresa.png'
-    }
-  ];
-
+//app.get('/seed-houses', async (_req, res) => {
+  //const houses = [
+    //{
+    //  name: 'Gandhi',
+    //  score: 0,
+    //  imageUrl: 'gandhi.png'
+    //},
+    //{
+     // name: 'Nehru',
+    //  score: 0,
+    //  imageUrl: 'nehru.png'
+    //},
+    //{
+    //  name: 'Tagore',
+    //  score: 0,
+    //  imageUrl: 'tagore.png'
+    //},
+    //{
+     // name: 'Teresa',
+      //score: 0,
+     // imageUrl: 'teresa.png'
+    //}
+  //];
+  
   try {
     await House.deleteMany({});
     await House.insertMany(houses);
