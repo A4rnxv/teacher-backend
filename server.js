@@ -92,5 +92,35 @@ app.delete('/api/competitions/:id', async (req, res) => {
   }
 });
 
+// Add after existing schema
+const houseSchema = new mongoose.Schema({
+  name: { type: String, required: true, unique: true },
+  score: { type: Number, default: 0 },
+  imageUrl: { type: String, required: true } // same image used on house page
+});
+
+const House = mongoose.model('House', houseSchema);
+
+// Get all house scores
+app.get('/api/houses', async (_req, res) => {
+  const houses = await House.find().sort({ score: -1 });
+  res.json(houses);
+});
+
+// Update house score
+app.post('/api/houses/:name/add', async (req, res) => {
+  const { name } = req.params;
+  const { points } = req.body;
+
+  const house = await House.findOneAndUpdate(
+    { name },
+    { $inc: { score: points } },
+    { new: true }
+  );
+  if (!house) return res.status(404).json({ error: 'House not found' });
+
+  res.json(house);
+});
+
 // --- Start server ---
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
